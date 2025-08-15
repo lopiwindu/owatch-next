@@ -1,8 +1,6 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
+import { Button, Card, Badge } from '@/components/ui'
 import { BarChart3, Play, User, Settings, Coins } from 'lucide-react'
 
 interface SidebarProps {

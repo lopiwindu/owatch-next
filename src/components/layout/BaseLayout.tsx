@@ -1,19 +1,11 @@
     import type { Metadata } from "next";
-import localFont from "next/font/local";
-import "./globals.css";
-import { ResponseLogger } from "@/components/response-logger";
-import { cookies } from "next/headers";
+    import { Inter, JetBrains_Mono } from 'next/font/google'
+    import "./globals.css";
+    import { ResponseLogger } from "@/components/response-logger";
+    import { cookies } from "next/headers";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+    const geistSans = Inter({ subsets: ['latin'], variable: '--font-geist-sans' })
+    const geistMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-geist-mono' })
 
 export const metadata: Metadata = {
   title: "O'Watch.ID - Watch to Earn Platform",

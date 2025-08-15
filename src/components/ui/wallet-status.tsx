@@ -1,17 +1,13 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { Card, CardContent } from '@/components/ui/card'
+import { Button, Badge, Card, CardContent } from '@/components/ui'
 import { Wallet, Copy, ExternalLink, LogOut } from 'lucide-react'
-import { useRouter } from 'next/navigation'
 
 export function WalletStatus(): JSX.Element {
   const [walletAddress, setWalletAddress] = useState<string>('')
   const [walletBalance, setWalletBalance] = useState<string>('0')
   const [isConnected, setIsConnected] = useState<boolean>(false)
-  const router = useRouter()
 
   useEffect(() => {
     const checkWalletStatus = (): void => {
@@ -32,7 +28,8 @@ export function WalletStatus(): JSX.Element {
     localStorage.removeItem('wallet_address')
     localStorage.removeItem('wallet_balance')
     setIsConnected(false)
-    router.push('/')
+  // fall back to simple redirect to root
+  window.location.href = '/'
   }
 
   const handleCopyAddress = (): void => {

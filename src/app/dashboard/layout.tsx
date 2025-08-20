@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { Sidebar } from "@/components/dashboard/Sidebar";
+import { Sidebar } from "@/components/layout/Sidebar";
 import { MobileNav } from "@/components/layout/MobileNav";
 
 export default function DashboardLayout({
@@ -9,24 +8,16 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [activeSection, setActiveSection] = useState("dashboard");
-
   return (
     <div className="min-h-screen bg-gray-50 flex">
       {/* Desktop Sidebar */}
       <div className="hidden lg:block">
-        <Sidebar
-          activeSection={activeSection}
-          onSectionChange={setActiveSection}
-        />
+        <Sidebar />
       </div>
 
       {/* Mobile Navigation */}
       <div className="lg:hidden">
-        <MobileNav
-          activeSection={activeSection}
-          onSectionChange={setActiveSection}
-        />
+        <MobileNav />
       </div>
 
       {/* Main Content */}

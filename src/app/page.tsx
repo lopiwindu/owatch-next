@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { LandingPage } from '@/app/landing/page.tsx'
+import { LandingPage } from '@/components/landing/LandingPage'
 
 export default function HomePage() {
   const router = useRouter()
@@ -11,7 +11,7 @@ export default function HomePage() {
     // If the wallet was connected previously, redirect immediately
     if (typeof window !== 'undefined') {
       const v = localStorage.getItem('wallet_connected') === 'true'
-      if (v) router.push('/dashboard')
+      if (v) router.push('/landing')
     }
   }, [router])
 

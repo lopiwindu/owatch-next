@@ -1,20 +1,34 @@
-'use client'
+"use client";
 
-import { Button, Card, Badge } from '@/components/ui'
-import { BarChart3, Play, User, Settings, Coins } from 'lucide-react'
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Button, Card, Badge } from "@/components/ui";
+import { BarChart3, Play, User, Settings, Coins } from "lucide-react";
 
-interface SidebarProps {
-  activeSection: string
-  onSectionChange: (section: string) => void
-}
+export function Sidebar(): JSX.Element {
+  const pathname = usePathname();
 
-export function Sidebar({ activeSection, onSectionChange }: SidebarProps): JSX.Element {
   const menuItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: BarChart3 },
-    { id: 'videos', label: 'Watch & Earn', icon: Play },
-    { id: 'profile', label: 'Profile', icon: User },
-    { id: 'settings', label: 'Settings', icon: Settings },
-  ]
+    {
+      id: "dashboard",
+      label: "Dashboard",
+      icon: BarChart3,
+      href: "/dashboard",
+    },
+    {
+      id: "videos",
+      label: "Watch & Earn",
+      icon: Play,
+      href: "/dashboard/videos",
+    },
+    { id: "profile", label: "Profile", icon: User, href: "/dashboard/profile" },
+    {
+      id: "settings",
+      label: "Settings",
+      icon: Settings,
+      href: "/dashboard/settings",
+    },
+  ];
 
   return (
     <div className="fixed left-0 top-0 h-screen w-64 bg-white border-r border-gray-200 p-6">
@@ -46,29 +60,32 @@ export function Sidebar({ activeSection, onSectionChange }: SidebarProps): JSX.E
       {/* Navigation Menu */}
       <nav className="space-y-2">
         {menuItems.map((item) => {
-          const Icon = item.icon
-          const isActive = activeSection === item.id
-          
+          const Icon = item.icon;
+          const isActive = pathname === item.href;
+
           return (
-            <Button
-              key={item.id}
-              variant={isActive ? 'default' : 'ghost'}
-              className={`w-full justify-start gap-3 h-12 ${
-                isActive 
-                  ? 'bg-purple-600 text-white hover:bg-purple-700' 
-                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-              }`}
-              onClick={() => onSectionChange(item.id)}
-            >
-              <Icon className="w-5 h-5" />
-              {item.label}
-              {item.id === 'videos' && (
-                <Badge variant="secondary" className="ml-auto bg-green-100 text-green-700">
-                  New
-                </Badge>
-              )}
-            </Button>
-          )
+            <Link key={item.id} href={item.href}>
+              <Button
+                variant={isActive ? "default" : "ghost"}
+                className={`w-full justify-start gap-3 h-12 ${
+                  isActive
+                    ? "bg-purple-600 text-white hover:bg-purple-700"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                }`}
+              >
+                <Icon className="w-5 h-5" />
+                {item.label}
+                {item.id === "videos" && (
+                  <Badge
+                    variant="secondary"
+                    className="ml-auto bg-green-100 text-green-700"
+                  >
+                    New
+                  </Badge>
+                )}
+              </Button>
+            </Link>
+          );
         })}
       </nav>
 
@@ -86,5 +103,5 @@ export function Sidebar({ activeSection, onSectionChange }: SidebarProps): JSX.E
         </Card>
       </div>
     </div>
-  )
+  );
 }

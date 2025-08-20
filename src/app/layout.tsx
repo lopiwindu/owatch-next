@@ -1,7 +1,7 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter, JetBrains_Mono } from 'next/font/google'
-import { ResponseLogger } from '@/components/response-logger'
+import { ResponseLogger } from '@/utils/response-logger'
 import { cookies } from 'next/headers'
 
 // Fallback to Google-hosted fonts to avoid requiring local .woff files in the repo.

@@ -1,23 +1,22 @@
+'use client'
+
 import { useState } from 'react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { Menu, X, Home, Play, User, Settings as SettingsIcon } from 'lucide-react'
 
-interface MobileNavProps {
-  activeSection: string
-  onSectionChange: (section: string) => void
-}
-
-export function MobileNav({ activeSection, onSectionChange }: MobileNavProps) {
+export function MobileNav() {
   const [isOpen, setIsOpen] = useState(false)
+  const pathname = usePathname()
 
   const menuItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: Home },
-    { id: 'videos', label: 'Video Content', icon: Play },
-    { id: 'profile', label: 'User Profile', icon: User },
-    { id: 'settings', label: 'Settings', icon: SettingsIcon },
+    { id: 'dashboard', label: 'Dashboard', icon: Home, href: '/dashboard' },
+    { id: 'videos', label: 'Video Content', icon: Play, href: '/dashboard/videos' },
+    { id: 'profile', label: 'User Profile', icon: User, href: '/dashboard/profile' },
+    { id: 'settings', label: 'Settings', icon: SettingsIcon, href: '/dashboard/settings' },
   ]
 
-  const handleSectionChange = (section: string) => {
-    onSectionChange(section)
+  const handleSectionChange = () => {
     setIsOpen(false)
   }
 
@@ -54,12 +53,13 @@ export function MobileNav({ activeSection, onSectionChange }: MobileNavProps) {
           <nav className="space-y-2">
             {menuItems.map((item) => {
               const Icon = item.icon
-              const isActive = activeSection === item.id
+              const isActive = pathname === item.href
               
               return (
-                <button
+                <Link
                   key={item.id}
-                  onClick={() => handleSectionChange(item.id)}
+                  href={item.href}
+                  onClick={handleSectionChange}
                   className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-all duration-200 ${
                     isActive
                       ? 'bg-blue-50 text-blue-700 border border-blue-200'
@@ -68,7 +68,7 @@ export function MobileNav({ activeSection, onSectionChange }: MobileNavProps) {
                 >
                   <Icon className={`w-5 h-5 ${isActive ? 'text-blue-600' : 'text-gray-500'}`} />
                   <span className="font-medium">{item.label}</span>
-                </button>
+                </Link>
               )
             })}
           </nav>

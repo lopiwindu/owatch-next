@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Inter, JetBrains_Mono } from 'next/font/google'
 import { ResponseLogger } from '@/utils/response-logger'
 import { cookies } from 'next/headers'
+import { ClientWalletProvider } from '@/components/ClientWalletProvider'
 
 // Fallback to Google-hosted fonts to avoid requiring local .woff files in the repo.
 const geistSans = Inter({ subsets: ['latin'], variable: '--font-geist-sans' })
@@ -20,7 +21,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <head>{requestId && <meta name="x-request-id" content={requestId} />}</head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {children}
+        <ClientWalletProvider>
+          {children}
+        </ClientWalletProvider>
         <ResponseLogger />
       </body>
     </html>

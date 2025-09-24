@@ -44,7 +44,7 @@ export function LandingNavbar({}: LandingNavbarProps) {
   const navItems = [
     { label: "Home", onClick: () => scrollToSection("hero") },
     { label: "How It Works", onClick: () => scrollToSection("how-it-works") },
-    { label: "Features", onClick: () => scrollToSection("features") },
+    // { label: "Features", onClick: () => scrollToSection("features") },
   ];
 
   return (

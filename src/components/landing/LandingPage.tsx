@@ -23,6 +23,7 @@ import {
   Shield,
   Zap,
 } from "lucide-react";
+import { LandingNavbar } from "./LandingNavbar";
 
 // Dynamically import wallet button to avoid SSR issues
 const WalletMultiButton = dynamic(
@@ -147,26 +148,11 @@ export function LandingPage({
         <div className="absolute inset-0 bg-gradient-to-br from-transparent via-purple-500/10 to-transparent"></div>
       </div>
 
-      {/* Header */}
-      <header className="relative z-10 px-4 py-6">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
-              <Play className="h-6 w-6 text-white" />
-            </div>
-            <h1 className="text-2xl font-bold text-white">O'Watch.ID</h1>
-          </div>
-          {/* <Badge
-            variant="secondary"
-            className="bg-purple-500/20 text-purple-200 border-purple-500/30"
-          >
-            Beta Platform
-          </Badge> */}
-        </div>
-      </header>
+      {/* Navigation */}
+      <LandingNavbar />
 
       {/* Hero Section */}
-      <section className="relative z-10 px-4 py-24">
+      <section id="hero" className="relative z-10 px-4 py-24 pt-32">
         <div className="max-w-5xl mx-auto text-center">
           <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-purple-300 text-sm font-medium mb-8">
             🎉 Now in Beta - Start earning today
@@ -250,7 +236,7 @@ export function LandingPage({
       </section>
 
       {/* Features Section */}
-      <section className="relative z-10 px-4 py-20">
+      <section id="features" className="relative z-10 px-4 py-20">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h3 className="text-3xl md:text-4xl font-bold text-white mb-4">
@@ -287,7 +273,7 @@ export function LandingPage({
       </section>
 
       {/* How It Works Section */}
-      <section className="relative z-10 px-4 py-20">
+      <section id="how-it-works" className="relative z-10 px-4 py-20">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
             <h3 className="text-3xl md:text-4xl font-bold text-white mb-4">

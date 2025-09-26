@@ -1,2 +1,3 @@
 // Context exports
-export * from './WalletContext';
+export { useWalletContext } from "./WalletContext";
+export { ThemeProvider, useTheme } from "./ThemeContext";

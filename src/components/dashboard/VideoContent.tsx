@@ -1,8 +1,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useWallet } from '@solana/wallet-adapter-react';
-import { Play, Pause, RotateCcw, Trophy, Clock, DollarSign } from 'lucide-react';
+import { useWallet } from "@solana/wallet-adapter-react";
+import { useTheme } from "../../context/ThemeContext";
+import {
+  Play,
+  Pause,
+  RotateCcw,
+  Trophy,
+  Clock,
+  DollarSign,
+} from "lucide-react";
 
 interface Video {
   id: number;
@@ -27,7 +35,7 @@ const dummyVideos: Video[] = [
     category: "Education",
     watched: false,
     progress: 0,
-    description: "Learn the basics of Web3 technology and how blockchain works"
+    description: "Learn the basics of Web3 technology and how blockchain works",
   },
   {
     id: 2,
@@ -38,7 +46,7 @@ const dummyVideos: Video[] = [
     category: "Technology",
     watched: false,
     progress: 0,
-    description: "Explore Solana's high-performance blockchain architecture"
+    description: "Explore Solana's high-performance blockchain architecture",
   },
   {
     id: 3,
@@ -49,7 +57,7 @@ const dummyVideos: Video[] = [
     category: "Finance",
     watched: false,
     progress: 0,
-    description: "Understanding Decentralized Finance and its applications"
+    description: "Understanding Decentralized Finance and its applications",
   },
   {
     id: 4,
@@ -60,7 +68,7 @@ const dummyVideos: Video[] = [
     category: "NFT",
     watched: false,
     progress: 0,
-    description: "Complete guide to buying, selling, and creating NFTs"
+    description: "Complete guide to buying, selling, and creating NFTs",
   },
   {
     id: 5,
@@ -71,7 +79,7 @@ const dummyVideos: Video[] = [
     category: "Trading",
     watched: false,
     progress: 0,
-    description: "Advanced trading strategies for cryptocurrency markets"
+    description: "Advanced trading strategies for cryptocurrency markets",
   },
   {
     id: 6,
@@ -82,8 +90,8 @@ const dummyVideos: Video[] = [
     category: "Development",
     watched: false,
     progress: 0,
-    description: "How smart contracts work and their real-world applications"
-  }
+    description: "How smart contracts work and their real-world applications",
+  },
 ];
 
 export function VideoContent(): JSX.Element {
@@ -103,7 +111,9 @@ export function VideoContent(): JSX.Element {
     if (connected && publicKey) {
       // Load balance from localStorage using wallet address as key
       const walletAddress = publicKey.toString();
-      const savedBalance = parseInt(localStorage.getItem(`owatch_balance_${walletAddress}`) || '0');
+      const savedBalance = parseInt(
+        localStorage.getItem(`owatch_balance_${walletAddress}`) || "0"
+      );
       setBalance(savedBalance);
     }
   }, [connected, publicKey]);
@@ -134,7 +144,7 @@ export function VideoContent(): JSX.Element {
   }, [isPlaying, selectedVideo, claimedRewards]);
 
   const getSecondsFromDuration = (duration: string): number => {
-    const [minutes, seconds] = duration.split(':').map(Number);
+    const [minutes, seconds] = duration.split(":").map(Number);
     return minutes * 60 + seconds;
   };
 
@@ -166,7 +176,7 @@ export function VideoContent(): JSX.Element {
 
   const handleClaimReward = (videoId: number, reward: number) => {
     if (!connected || !publicKey) {
-      alert('Please connect your wallet first!');
+      alert("Please connect your wallet first!");
       return;
     }
 
@@ -178,7 +188,10 @@ export function VideoContent(): JSX.Element {
     const walletAddress = publicKey.toString();
     const newBalance = balance + reward;
     setBalance(newBalance);
-    localStorage.setItem(`owatch_balance_${walletAddress}`, newBalance.toString());
+    localStorage.setItem(
+      `owatch_balance_${walletAddress}`,
+      newBalance.toString()
+    );
 
     // Update video status
     setVideos((prev) =>
@@ -194,39 +207,51 @@ export function VideoContent(): JSX.Element {
   const formatTime = (seconds: number): string => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
   const getFilteredVideos = () => {
     return videos.filter((video) => {
-      const matchesFilter = filter === "all" || video.category.toLowerCase() === filter.toLowerCase();
-      const matchesSearch = video.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           video.description.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesFilter =
+        filter === "all" ||
+        video.category.toLowerCase() === filter.toLowerCase();
+      const matchesSearch =
+        video.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        video.description.toLowerCase().includes(searchTerm.toLowerCase());
       return matchesFilter && matchesSearch;
     });
   };
 
-  const categories = ["all", ...Array.from(new Set(videos.map(v => v.category.toLowerCase())))];
+  const categories = [
+    "all",
+    ...Array.from(new Set(videos.map((v) => v.category.toLowerCase()))),
+  ];
 
   return (
     <div className="p-6 space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-white mb-2">Watch & Earn</h1>
-          <p className="text-gray-400">
-            {connected ? 'Watch videos and earn OWATCH tokens' : 'Connect your Phantom wallet to start earning'}
+          <h1 className="text-3xl font-bold dark:text-white text-gray-900 mb-2">
+            Watch & Earn
+          </h1>
+          <p className="dark:text-slate-300 text-gray-600">
+            {connected
+              ? "Watch videos and earn OWATCH tokens"
+              : "Connect your Phantom wallet to start earning"}
           </p>
         </div>
         <div className="flex items-center space-x-4">
           {connected && (
-            <div className="flex items-center space-x-2 bg-gray-800 px-4 py-2 rounded-lg">
+            <div className="flex items-center space-x-2 dark:bg-white/10 dark:backdrop-blur-md dark:border dark:border-white/20 bg-gray-100 border border-gray-200 px-4 py-2 rounded-lg">
               <DollarSign className="w-5 h-5 text-green-400" />
-              <span className="text-white font-semibold">{balance} OWATCH</span>
+              <span className="dark:text-white text-gray-900 font-semibold">
+                {balance} OWATCH
+              </span>
             </div>
           )}
           {!connected && (
-            <div className="bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm">
+            <div className="bg-yellow-500 dark:text-yellow-900 text-white px-4 py-2 rounded-lg text-sm font-medium">
               ⚠️ Wallet not connected
             </div>
           )}
@@ -234,23 +259,25 @@ export function VideoContent(): JSX.Element {
       </div>
 
       {/* Search and Filter */}
-      <div className="bg-gray-800 rounded-xl p-4">
+      <div className="dark:bg-white/5 dark:backdrop-blur-md dark:border dark:border-white/10 bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
         <div className="flex flex-col sm:flex-row gap-4">
           <input
             type="text"
             placeholder="Search videos..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="flex-1 px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+            className="flex-1 px-4 py-2 dark:bg-slate-700 dark:text-white dark:border-slate-600 dark:focus:ring-purple-500 dark:focus:border-purple-500 bg-gray-50 text-gray-900 border border-gray-300 focus:ring-purple-500 focus:border-purple-500 rounded-lg focus:ring-2"
           />
           <select
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
-            className="px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+            className="px-4 py-2 dark:bg-slate-700 dark:text-white dark:border-slate-600 dark:focus:ring-purple-500 dark:focus:border-purple-500 bg-gray-50 text-gray-900 border border-gray-300 focus:ring-purple-500 focus:border-purple-500 rounded-lg focus:ring-2"
           >
             {categories.map((category) => (
               <option key={category} value={category}>
-                {category === "all" ? "All Categories" : category.charAt(0).toUpperCase() + category.slice(1)}
+                {category === "all"
+                  ? "All Categories"
+                  : category.charAt(0).toUpperCase() + category.slice(1)}
               </option>
             ))}
           </select>
@@ -263,12 +290,14 @@ export function VideoContent(): JSX.Element {
           {getFilteredVideos().map((video) => (
             <div
               key={video.id}
-              className="bg-gray-800 rounded-lg p-4 hover:bg-gray-700 transition-colors cursor-pointer"
+              className="dark:bg-white/5 dark:backdrop-blur-md dark:border dark:border-white/10 dark:hover:bg-white/10 bg-white hover:bg-gray-50 border border-gray-200 rounded-lg p-4 transition-all duration-300 cursor-pointer shadow-sm group"
               onClick={() => handlePlayVideo(video)}
             >
               <div className="flex items-center space-x-4">
-                <div className="w-32 h-20 bg-gray-600 rounded flex items-center justify-center relative">
-                  <span className="text-white text-xs">Video</span>
+                <div className="w-32 h-20 dark:bg-slate-600 bg-gray-200 rounded flex items-center justify-center relative">
+                  <span className="dark:text-slate-300 text-gray-600 text-xs">
+                    Video
+                  </span>
                   {video.watched && (
                     <div className="absolute top-1 right-1 w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
                       <Trophy className="w-2 h-2 text-white" />
@@ -276,27 +305,37 @@ export function VideoContent(): JSX.Element {
                   )}
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-white font-semibold mb-1">{video.title}</h3>
-                  <p className="text-gray-400 text-sm mb-2">{video.description}</p>
-                  <div className="flex items-center space-x-4 text-sm text-gray-400 mb-2">
+                  <h3 className="dark:text-white text-gray-900 font-semibold mb-1">
+                    {video.title}
+                  </h3>
+                  <p className="dark:text-slate-300 text-gray-600 text-sm mb-2">
+                    {video.description}
+                  </p>
+                  <div className="flex items-center space-x-4 text-sm dark:text-slate-400 text-gray-500 mb-2">
                     <span className="flex items-center space-x-1">
                       <Clock className="w-3 h-3" />
                       <span>{video.duration}</span>
                     </span>
                     <span className="flex items-center space-x-1">
                       <DollarSign className="w-3 h-3 text-green-400" />
-                      <span className="text-green-400">{video.reward} OWATCH</span>
+                      <span className="text-green-400">
+                        {video.reward} OWATCH
+                      </span>
                     </span>
-                    <span className="px-2 py-1 bg-gray-700 rounded text-xs">{video.category}</span>
+                    <span className="px-2 py-1 dark:bg-slate-700 bg-gray-100 rounded text-xs">
+                      {video.category}
+                    </span>
                   </div>
-                  <div className="w-full bg-gray-700 rounded-full h-2">
+                  <div className="w-full dark:bg-slate-700 bg-gray-200 rounded-full h-2">
                     <div
-                      className="bg-purple-600 h-2 rounded-full transition-all duration-300"
+                      className="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full transition-all duration-300"
                       style={{ width: `${video.progress}%` }}
                     ></div>
                   </div>
                   {video.progress > 0 && (
-                    <p className="text-xs text-gray-400 mt-1">{video.progress.toFixed(0)}% watched</p>
+                    <p className="text-xs dark:text-slate-400 text-gray-500 mt-1">
+                      {video.progress.toFixed(0)}% watched
+                    </p>
                   )}
                 </div>
                 <div className="flex flex-col items-end space-y-2">
@@ -307,7 +346,7 @@ export function VideoContent(): JSX.Element {
                     </span>
                   ) : (
                     <button
-                      className="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 rounded text-sm transition-colors"
+                      className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-3 py-1 rounded text-sm transition-all duration-300 font-medium"
                       onClick={(e) => {
                         e.stopPropagation();
                         handlePlayVideo(video);
@@ -316,17 +355,18 @@ export function VideoContent(): JSX.Element {
                       Watch
                     </button>
                   )}
-                  {video.progress >= 80 && !claimedRewards.includes(video.id) && (
-                    <button
-                      className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm transition-colors"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleClaimReward(video.id, video.reward);
-                      }}
-                    >
-                      Claim {video.reward} OWATCH
-                    </button>
-                  )}
+                  {video.progress >= 80 &&
+                    !claimedRewards.includes(video.id) && (
+                      <button
+                        className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white px-3 py-1 rounded text-sm transition-all duration-300 font-medium"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleClaimReward(video.id, video.reward);
+                        }}
+                      >
+                        Claim {video.reward} OWATCH
+                      </button>
+                    )}
                 </div>
               </div>
             </div>
@@ -335,18 +375,22 @@ export function VideoContent(): JSX.Element {
 
         {/* Video Player */}
         <div className="lg:col-span-1">
-          <div className="bg-gray-800 rounded-lg p-4 sticky top-6">
-            <h3 className="text-white font-semibold mb-4">Now Playing</h3>
+          <div className="dark:bg-white/5 dark:backdrop-blur-md bg-white border dark:border-white/20 border-gray-200 rounded-xl p-6 sticky top-6">
+            <h3 className="dark:text-white text-gray-900 font-semibold mb-4">
+              Now Playing
+            </h3>
             {selectedVideo ? (
               <div>
-                <div className="w-full h-48 bg-gray-700 rounded mb-4 flex flex-col items-center justify-center relative">
+                <div className="w-full h-48 dark:bg-gray-700 bg-gray-100 rounded-lg mb-4 flex flex-col items-center justify-center relative">
                   <div className="text-center">
                     {isPlaying ? (
                       <Play className="w-12 h-12 text-purple-400 mx-auto mb-2" />
                     ) : (
-                      <Pause className="w-12 h-12 text-gray-400 mx-auto mb-2" />
+                      <Pause className="w-12 h-12 dark:text-gray-400 text-gray-500 mx-auto mb-2" />
                     )}
-                    <span className="text-white text-sm">{selectedVideo.title}</span>
+                    <span className="dark:text-white text-gray-900 text-sm">
+                      {selectedVideo.title}
+                    </span>
                   </div>
                   {selectedVideo.watched && (
                     <div className="absolute top-2 right-2">
@@ -357,13 +401,17 @@ export function VideoContent(): JSX.Element {
 
                 <div className="flex justify-center space-x-2 mb-4">
                   <button
-                    className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded transition-colors"
+                    className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-4 py-2 rounded-lg transition-all duration-300"
                     onClick={() => setIsPlaying(!isPlaying)}
                   >
-                    {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+                    {isPlaying ? (
+                      <Pause className="w-4 h-4" />
+                    ) : (
+                      <Play className="w-4 h-4" />
+                    )}
                   </button>
                   <button
-                    className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded transition-colors"
+                    className="dark:bg-gray-600 dark:hover:bg-gray-700 bg-gray-200 hover:bg-gray-300 dark:text-white text-gray-700 px-4 py-2 rounded-lg transition-all duration-300"
                     onClick={handleResetVideo}
                   >
                     <RotateCcw className="w-4 h-4" />
@@ -371,29 +419,33 @@ export function VideoContent(): JSX.Element {
                 </div>
 
                 <div className="space-y-2 text-sm">
-                  <div className="flex justify-between text-gray-400">
+                  <div className="flex justify-between dark:text-gray-400 text-gray-600">
                     <span>Watch Time:</span>
-                    <span>{formatTime(watchTime)} / {selectedVideo.duration}</span>
+                    <span>
+                      {formatTime(watchTime)} / {selectedVideo.duration}
+                    </span>
                   </div>
-                  <div className="flex justify-between text-gray-400">
+                  <div className="flex justify-between dark:text-gray-400 text-gray-600">
                     <span>Progress:</span>
                     <span>{selectedVideo.progress.toFixed(0)}%</span>
                   </div>
-                  <div className="flex justify-between text-gray-400">
+                  <div className="flex justify-between dark:text-gray-400 text-gray-600">
                     <span>Reward:</span>
-                    <span className="text-green-400">{selectedVideo.reward} OWATCH</span>
+                    <span className="text-green-400">
+                      {selectedVideo.reward} OWATCH
+                    </span>
                   </div>
-                  <div className="w-full bg-gray-700 rounded-full h-2 mt-2">
+                  <div className="w-full dark:bg-gray-700 bg-gray-300 rounded-full h-2 mt-2">
                     <div
-                      className="bg-purple-600 h-2 rounded-full transition-all duration-300"
+                      className="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full transition-all duration-300"
                       style={{ width: `${selectedVideo.progress}%` }}
                     ></div>
                   </div>
                 </div>
               </div>
             ) : (
-              <div className="w-full h-48 bg-gray-700 rounded flex items-center justify-center">
-                <div className="text-center text-gray-400">
+              <div className="w-full h-48 dark:bg-gray-700 bg-gray-100 rounded-lg flex items-center justify-center">
+                <div className="text-center dark:text-gray-400 text-gray-500">
                   <Play className="w-12 h-12 mx-auto mb-2 opacity-50" />
                   <span>Select a video to start watching</span>
                 </div>
@@ -406,25 +458,34 @@ export function VideoContent(): JSX.Element {
       {/* Claim Modal */}
       {showClaimModal && selectedVideo && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-gray-800 p-6 rounded-lg max-w-md w-full mx-4">
+          <div className="dark:bg-white/10 dark:backdrop-blur-md bg-white border dark:border-white/20 border-gray-200 rounded-xl p-6 max-w-md w-full mx-4">
             <div className="text-center mb-4">
               <Trophy className="w-16 h-16 text-yellow-400 mx-auto mb-2" />
-              <h3 className="text-white text-xl font-bold">🎉 Reward Available!</h3>
+              <h3 className="dark:text-white text-gray-900 text-xl font-bold">
+                🎉 Reward Available!
+              </h3>
             </div>
-            <p className="text-gray-300 mb-4 text-center">
-              You've watched <strong>{selectedVideo.progress.toFixed(0)}%</strong> of "{selectedVideo.title}".
-              Claim your <strong className="text-green-400">{selectedVideo.reward} OWATCH</strong> tokens!
+            <p className="dark:text-gray-300 text-gray-600 mb-4 text-center">
+              You've watched{" "}
+              <strong>{selectedVideo.progress.toFixed(0)}%</strong> of "
+              {selectedVideo.title}". Claim your{" "}
+              <strong className="text-green-400">
+                {selectedVideo.reward} OWATCH
+              </strong>{" "}
+              tokens!
             </p>
             <div className="flex justify-center space-x-3">
               <button
-                className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded transition-colors"
+                className="dark:bg-gray-600 dark:hover:bg-gray-700 bg-gray-200 hover:bg-gray-300 dark:text-white text-gray-700 px-4 py-2 rounded-lg transition-all duration-300"
                 onClick={() => setShowClaimModal(false)}
               >
                 Watch More
               </button>
               <button
-                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded transition-colors"
-                onClick={() => handleClaimReward(selectedVideo.id, selectedVideo.reward)}
+                className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white px-4 py-2 rounded-lg transition-all duration-300"
+                onClick={() =>
+                  handleClaimReward(selectedVideo.id, selectedVideo.reward)
+                }
               >
                 Claim {selectedVideo.reward} OWATCH
               </button>

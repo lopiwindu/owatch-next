@@ -1,15 +1,11 @@
 "use client";
 
-import { Sidebar } from "@/components/layout/Sidebar";
-import { MobileNav } from "@/components/layout/MobileNav";
+import { SidebarProvider } from "@/context/SidebarContext";
+import { DashboardLayout } from "@/components/layout/DashboardLayout";
 
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <>
+    <SidebarProvider>
       {/* Dark mode background */}
       <div className="hidden dark:block min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
         {/* Modern Grid Background */}
@@ -18,39 +14,15 @@ export default function DashboardLayout({
           <div className="absolute inset-0 bg-gradient-to-br from-transparent via-purple-500/10 to-transparent"></div>
         </div>
 
-        <div className="relative z-10 flex min-h-screen">
-          {/* Desktop Sidebar */}
-          <div className="hidden lg:block">
-            <Sidebar />
-          </div>
-
-          {/* Mobile Navigation */}
-          <div className="lg:hidden">
-            <MobileNav />
-          </div>
-
-          {/* Main Content */}
-          <main className="flex-1 lg:ml-64">{children}</main>
+        <div className="relative z-10">
+          <DashboardLayout>{children}</DashboardLayout>
         </div>
       </div>
 
       {/* Light mode background */}
-      <div className="dark:hidden min-h-screen bg-white">
-        <div className="flex min-h-screen">
-          {/* Desktop Sidebar */}
-          <div className="hidden lg:block">
-            <Sidebar />
-          </div>
-
-          {/* Mobile Navigation */}
-          <div className="lg:hidden">
-            <MobileNav />
-          </div>
-
-          {/* Main Content */}
-          <main className="flex-1 lg:ml-64">{children}</main>
-        </div>
+      <div className="dark:hidden min-h-screen bg-gray-50">
+        <DashboardLayout>{children}</DashboardLayout>
       </div>
-    </>
+    </SidebarProvider>
   );
 }

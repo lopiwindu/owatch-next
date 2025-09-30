@@ -113,7 +113,7 @@ export function Dashboard(): JSX.Element {
             <div className="w-2 h-2 bg-green-400 rounded-full mr-2"></div>
               Online
             </Badge>
-            <ThemeToggle />
+            {/* <ThemeToggle /> */}
           </div>
         </div>
 
